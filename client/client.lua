@@ -2,29 +2,18 @@ local selectedApartment = nil
 local selectedInterior = nil
 
 Citizen.CreateThread(function()
-    local pedModel = GetHashKey("a_m_m_business_01")
-    RequestModel(pedModel)
-    while not HasModelLoaded(pedModel) do
-        Wait(1)
-    end
-
-    local ped = CreatePed(4, pedModel, Config.PedLocation.x, Config.PedLocation.y, Config.PedLocation.z, Config.PedLocation.heading, false, true)
-    SetEntityInvincible(ped, true)
-    SetBlockingOfNonTemporaryEvents(ped, true)
-    FreezeEntityPosition(ped, true)
-
+    local pedMarker = Config.PedMarkerLocation
     while true do
-        Wait(0)
-        DrawMarker(1, Config.PedLocation.x, Config.PedLocation.y, Config.PedLocation.z - 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 255, 0, 0, 100, false, true, 2, nil, nil, false)
-        if IsControlJustReleased(0, 38) then -- E key
-            local playerCoords = GetEntityCoords(PlayerPedId())
-            local distance = GetDistanceBetweenCoords(playerCoords, Config.PedLocation.x, Config.PedLocation.y, Config.PedLocation.z, true)
-            if distance < 2.0 then
-                TriggerEvent('rentapartment')
-            end
+        Citizen.Wait(0)
+        local playerCoords = GetEntityCoords(PlayerPedId())
+        if GetDistanceBetweenCoords(playerCoords, pedMarker.x, pedMarker.y, pedMarker.z, true) < 1.5 then
+            -- Display prompt to rent apartment
+            -- Handle player input to select apartment and shell
+            -- TriggerServerEvent('ingenious5v:rentApartment', selectedApartment, selectedShell)
         end
     end
 end)
+
 
 RegisterCommand('rentapartment', function()
     local playerPed = PlayerPedId()
