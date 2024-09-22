@@ -6,6 +6,8 @@ author 'Ingenious5V'
 description 'Apartment Rental System with Overextended Integration'
 version '1.0.0'
 
+lua54 'yes' -- Enable Lua 5.4
+
 shared_scripts {
     '@ox_lib/init.lua', -- Overextended library
     'shared/config.lua', -- Your shared configuration
@@ -19,12 +21,14 @@ server_scripts {
     'server/main.lua', -- Your server script
 }
 
--- Files
+ui_page 'html/index.html'
+
 files {
     'html/index.html',
     'html/style.css',
-    'html/scripts.js'
+    'html/script.js'
 }
+
 
 -- UI page
 ui_page 'html/index.html'
