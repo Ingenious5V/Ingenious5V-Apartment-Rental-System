@@ -36,3 +36,8 @@ Config.PedMarkerLocation = {
     -- Update with the actual coordinates for your ped marker
 }
 
+-- Existing configurations...
+
+-- Overextended integration configuration
+Config.SomeFeature = true
+
