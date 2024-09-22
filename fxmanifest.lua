@@ -1,25 +1,24 @@
+-- fxmanifest.lua
 fx_version 'cerulean'
 game 'gta5'
 
 author 'Ingenious5V'
-description 'Apartment Rental System for FiveM'
+description 'Apartment Rental System with Overextended Integration'
 version '1.0.0'
 
--- Server scripts
-server_scripts {
-    '@oxmysql/lib/MySQL.lua', -- Include OxMySQL library
-    'server/main.lua'
-}
-
--- Client scripts
-client_scripts {
-    'client/main.lua'
-}
-
--- Shared scripts
 shared_scripts {
-    'config.lua'
+    '@ox_lib/init.lua', -- Overextended library
+    'config.lua', -- Your existing configuration
 }
+
+client_scripts {
+    'client/main.lua', -- Your existing client script
+}
+
+server_scripts {
+    'server/main.lua', -- Your existing server script
+}
+
 
 -- Files
 files {
