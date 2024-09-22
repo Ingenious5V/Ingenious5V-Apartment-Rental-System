@@ -1,3 +1,39 @@
+-- client/main.lua
+
+-- Function to initialize the target system
+local function initializeTargetSystem()
+    if Config.TargetSystem == 'ox_target' then
+        -- Initialize ox_target
+        print('Initializing ox_target...')
+        -- Add your ox_target initialization code here
+
+    elseif Config.TargetSystem == 'qtarget' then
+        -- Initialize qtarget
+        print('Initializing qtarget...')
+        -- Add your qtarget initialization code here
+
+    elseif Config.TargetSystem == 'none' then
+        -- No target system
+        print('No target system selected.')
+    else
+        print('Invalid target system selected.')
+    end
+end
+
+-- Function to create the ped marker
+local function createPedMarker()
+    local pedLocation = Config.PedMarkerLocation
+    -- Add your code to create the ped marker at pedLocation
+    print('Creating ped marker at:', pedLocation)
+end
+
+-- Call the functions to initialize the target system and create the ped marker
+initializeTargetSystem()
+createPedMarker()
+
+-- Existing client script logic...
+
+
 local selectedApartment = nil
 local selectedInterior = nil
 
