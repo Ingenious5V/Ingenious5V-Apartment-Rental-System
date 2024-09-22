@@ -41,6 +41,9 @@ end
 initializeTargetSystem()
 createPedMarker()
 
+-- Existing client script logic...
+
+
 local selectedApartment = nil
 local selectedInterior = nil
 
