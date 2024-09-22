@@ -8,7 +8,7 @@ version '1.0.0'
 
 shared_scripts {
     '@ox_lib/init.lua', -- Overextended library
-    'config.lua', -- Your configuration
+    'shared/config.lua', -- Your shared configuration
 }
 
 client_scripts {
