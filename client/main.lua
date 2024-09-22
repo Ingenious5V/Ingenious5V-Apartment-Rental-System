@@ -23,16 +23,23 @@ end
 -- Function to create the ped marker
 local function createPedMarker()
     local pedLocation = Config.PedMarkerLocation
-    -- Add your code to create the ped marker at pedLocation
-    print('Creating ped marker at:', pedLocation)
+    local pedType = Config.PedType
+
+    -- Load the ped model
+    RequestModel(pedType)
+    while not HasModelLoaded(pedType) do
+        Wait(1)
+    end
+
+    -- Create the ped at the specified location
+    local ped = CreatePed(4, pedType, pedLocation.x, pedLocation.y, pedLocation.z, 0.0, false, true)
+    SetEntityAsMissionEntity(ped, true, true)
+    print('Created ped marker at:', pedLocation, 'with ped type:', pedType)
 end
 
 -- Call the functions to initialize the target system and create the ped marker
 initializeTargetSystem()
 createPedMarker()
-
--- Existing client script logic...
-
 
 local selectedApartment = nil
 local selectedInterior = nil
