@@ -8,18 +8,16 @@ version '1.0.0'
 
 shared_scripts {
     '@ox_lib/init.lua', -- Overextended library
-    'config.lua', -- Your existing configuration
+    'config.lua', -- Your configuration
 }
 
 client_scripts {
-    'client/main.lua', -- Your existing client script
+    'client/main.lua', -- Your client script
 }
 
 server_scripts {
-    'server/main.lua', -- Your existing server script
+    'server/main.lua', -- Your server script
 }
-
-
 -- Files
 files {
     'html/index.html',
