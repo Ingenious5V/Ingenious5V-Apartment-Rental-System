@@ -7,6 +7,9 @@ Config.TargetSystem = 'ox_target' -- Default to 'ox_target'
 -- Ped marker location (vector3 coordinates)
 Config.PedMarkerLocation = vector3(0.0, 0.0, 0.0) -- Default coordinates
 
+-- Ped type (model name)
+Config.PedType = 'a_m_m_business_01' -- Default ped model
+
 
 Config.Apartments = {
     {
