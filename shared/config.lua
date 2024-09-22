@@ -1,4 +1,12 @@
+-- config.lua
 Config = {}
+
+-- Target system options: 'ox_target', 'qtarget', or 'none'
+Config.TargetSystem = 'ox_target' -- Default to 'ox_target'
+
+-- Ped marker location (vector3 coordinates)
+Config.PedMarkerLocation = vector3(0.0, 0.0, 0.0) -- Default coordinates
+
 
 Config.Apartments = {
     {
@@ -30,12 +38,6 @@ Config.Apartments = {
     }
     -- Add more apartments as needed
 }
-
-Config.PedMarkerLocation = {
-    x = -267.0, y = -960.0, z = 31.0  -- Example coordinates for the ped marker
-    -- Update with the actual coordinates for your ped marker
-}
-
 -- Existing configurations...
 
 -- Overextended integration configuration
