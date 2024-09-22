@@ -25,3 +25,12 @@ function GetShellPrice(apartment, shell)
     end
     return 0
 end
+
+-- Existing server script logic...
+
+-- Overextended integration logic
+AddEventHandler('onResourceStart', function(resourceName)
+    if GetCurrentResourceName() == resourceName then
+        print('Bridge server script started')
+    end
+end)
