@@ -1,4 +1,4 @@
--- config.lua
+-- shared/config.lua
 Config = {}
 
 -- Target system options: 'ox_target', 'qtarget', or 'none'
