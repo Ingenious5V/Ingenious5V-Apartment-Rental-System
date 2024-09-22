@@ -18,6 +18,7 @@ client_scripts {
 server_scripts {
     'server/main.lua', -- Your server script
 }
+
 -- Files
 files {
     'html/index.html',
