@@ -57,3 +57,13 @@ function GetUserInput(text, example, length)
     end
     return nil
 end
+
+-- Existing client script logic...
+
+-- Overextended integration logic
+AddEventHandler('onClientResourceStart', function(resourceName)
+    if GetCurrentResourceName() == resourceName then
+        print('Bridge client script started')
+    end
+end)
+
