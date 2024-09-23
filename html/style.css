@@ -1,72 +1,49 @@
-/* html/style.css */
-:root {
-    --tablet-width: 400px;
-    --tablet-height: 600px;
-}
-
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     margin: 0;
+    padding: 0;
 }
 
 #ipad {
-    width: var(--tablet-width);
-    height: var(--tablet-height);
-    background-color: #fff;
-    border-radius: 30px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    margin: 50px auto;
     padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 #apartment-info {
     text-align: center;
 }
 
-#apartment-info img {
+#apartment-image, #interior-image {
     width: 100%;
     height: auto;
-    margin: 10px 0;
+    border-radius: 10px;
+    margin-top: 10px;
 }
 
 #navigation {
     display: flex;
     justify-content: space-between;
+    margin-top: 20px;
 }
 
-#navigation button {
-    background-color: #007bff;
-    color: #fff;
+button {
+    padding: 10px 20px;
+    font-size: 16px;
     border: none;
-    padding: 10px;
     border-radius: 5px;
     cursor: pointer;
 }
 
-#navigation button:hover {
-    background-color: #0056b3;
-}
-
 #close-btn {
+    background-color: red;
+    color: white;
     position: absolute;
     top: 10px;
     right: 10px;
-    background-color: #ff4d4d;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-#close-btn:hover {
-    background-color: #cc0000;
 }
