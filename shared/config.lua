@@ -17,6 +17,10 @@ Config.PedRotation = 0.0 -- Default rotation
 Config.TabletWidth = 400 -- Default width in pixels
 Config.TabletHeight = 600 -- Default height in pixels
 
+-- Default images
+Config.DefaultApartmentImage = 'images/default_apartment.jpg'
+Config.DefaultInteriorImage = 'images/default_interior.jpg'
+
 -- Apartments configuration
 Config.Apartments = {
     {
