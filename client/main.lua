@@ -85,7 +85,7 @@ AddEventHandler('rentapartment', function()
             margin = 10,
             font = 'Arial',
             fontSize = 16,
-            tablet = true -- This makes the menu look like a tablet
+            tablet = true
         }
     })
 
@@ -123,7 +123,7 @@ AddEventHandler('selectinterior', function(data)
             margin = 10,
             font = 'Arial',
             fontSize = 16,
-            tablet = true -- This makes the menu look like a tablet
+            tablet = true
         }
     })
 
@@ -167,7 +167,7 @@ AddEventHandler('confirmrental', function(data)
             margin = 10,
             font = 'Arial',
             fontSize = 16,
-            tablet = true -- This makes the menu look like a tablet
+            tablet = true
         }
     })
 
@@ -176,8 +176,11 @@ end)
 
 RegisterNetEvent('teleportToApartment')
 AddEventHandler('teleportToApartment', function()
-    -- Teleport the player to the selected apartment's location
-    SetEntityCoords(PlayerPedId(), selectedApartment.coords.x, selectedApartment.coords.y, selectedApartment.coords.z)
+    -- Check if the player exists before teleporting
+    if DoesEntityExist(PlayerPedId()) and not IsEntityDead(PlayerPedId()) then
+        -- Teleport the player to the selected apartment's location
+        SetEntityCoords(PlayerPedId(), selectedApartment.coords.x, selectedApartment.coords.y, selectedApartment.coords.z)
+    end
 end)
 
 RegisterNetEvent('closeMenu')
@@ -190,3 +193,7 @@ function GetUserInput(text, example, length)
     AddTextEntry('FMMC_KEY_TIP1', text .. ':')
     DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP1", "", example, "", "", "", length)
     while (UpdateOnscreenKeyboard() == 0) do
+        Wait(0)
+    end
+    return GetOnscreenKeyboardResult() -- Return the input result
+end
