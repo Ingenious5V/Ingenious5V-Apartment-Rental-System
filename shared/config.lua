@@ -13,39 +13,25 @@ Config.PedType = 'a_m_m_business_01' -- Default ped model
 -- Ped rotation (heading in degrees)
 Config.PedRotation = 0.0 -- Default rotation
 
+-- Tablet UI dimensions
+Config.TabletWidth = 400 -- Default width in pixels
+Config.TabletHeight = 600 -- Default height in pixels
 
+-- Apartments configuration
 Config.Apartments = {
     {
-        name = "Downtown Apartment",
-        price = 1200,
-        interiors = {
-            {shell = "shell_v16_low", price = 500},
-            {shell = "shell_v16_mid", price = 750},
-            {shell = "shell_v16_high", price = 1000}
-        }
+        name = 'Apartment 1',
+        price = 1000,
+        location = vector3(100.0, 200.0, 300.0),
+        image = 'images/apartment1.jpg',
+        interiorImage = 'images/interior1.jpg'
     },
     {
-        name = "Beachside Apartment",
-        price = 1800,
-        interiors = {
-            {shell = "shell_v16_low", price = 500},
-            {shell = "shell_v16_mid", price = 750},
-            {shell = "shell_v16_high", price = 1000}
-        }
+        name = 'Apartment 2',
+        price = 1500,
+        location = vector3(200.0, 300.0, 400.0),
+        image = 'images/apartment2.jpg',
+        interiorImage = 'images/interior2.jpg'
     },
-    {
-        name = "Luxury Penthouse",
-        price = 2500,
-        interiors = {
-            {shell = "shell_v16_low", price = 500},
-            {shell = "shell_v16_mid", price = 750},
-            {shell = "shell_v16_high", price = 1000}
-        }
-    }
     -- Add more apartments as needed
 }
--- Existing configurations...
-
--- Overextended integration configuration
-Config.SomeFeature = true
-
