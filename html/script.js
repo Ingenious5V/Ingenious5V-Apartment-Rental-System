@@ -1,60 +1,53 @@
-// html/script.js
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('NUI loaded');
+document.addEventListener('DOMContentLoaded', function() {
+    const ipad = document.getElementById('ipad');
+    const closeBtn = document.getElementById('close-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const apartmentName = document.getElementById('apartment-name');
+    const apartmentPrice = document.getElementById('apartment-price');
+    const apartmentImage = document.getElementById('apartment-image');
+    const interiorImage = document.getElementById('interior-image');
 
-    window.addEventListener('message', (event) => {
-        const data = event.data;
-        if (data.action === 'openApartmentMenu') {
-            openApartmentMenu(data.apartments, data.tabletWidth, data.tabletHeight, data.defaultApartmentImage, data.defaultInteriorImage);
+    // Example data
+    const apartments = [
+        {
+            name: 'Apartment 1',
+            price: '$1000/month',
+            image: 'images/default_apartment.jpg',
+            interior: 'images/default_interior.jpg'
+        },
+        {
+            name: 'Apartment 2',
+            price: '$1200/month',
+            image: 'images/default_apartment.jpg',
+            interior: 'images/default_interior.jpg'
         }
-    });
+    ];
 
-    let currentApartmentIndex = 0;
-    let apartments = [];
-    let defaultApartmentImage = '';
-    let defaultInteriorImage = '';
+    let currentIndex = 0;
 
-    function openApartmentMenu(apartmentList, tabletWidth, tabletHeight, defaultAptImage, defaultIntImage) {
-        apartments = apartmentList;
-        currentApartmentIndex = 0;
-        defaultApartmentImage = defaultAptImage;
-        defaultInteriorImage = defaultIntImage;
-        displayApartmentInfo();
-        document.getElementById('ipad').style.display = 'block';
-        document.documentElement.style.setProperty('--tablet-width', `${tabletWidth}px`);
-        document.documentElement.style.setProperty('--tablet-height', `${tabletHeight}px`);
+    function updateApartmentInfo(index) {
+        const apartment = apartments[index];
+        apartmentName.textContent = apartment.name;
+        apartmentPrice.textContent = apartment.price;
+        apartmentImage.src = apartment.image;
+        interiorImage.src = apartment.interior;
     }
 
-    function displayApartmentInfo() {
-        const apartment = apartments[currentApartmentIndex];
-        document.getElementById('apartment-name').innerText = apartment.name;
-        document.getElementById('apartment-price').innerText = `Price: $${apartment.price}`;
-        document.getElementById('apartment-image').src = apartment.image || defaultApartmentImage;
-        document.getElementById('interior-image').src = apartment.interiorImage || defaultInteriorImage;
-    }
-
-    document.getElementById('prev-btn').addEventListener('click', () => {
-        if (currentApartmentIndex > 0) {
-            currentApartmentIndex--;
-            displayApartmentInfo();
-        }
+    prevBtn.addEventListener('click', function() {
+        currentIndex = (currentIndex > 0) ? currentIndex - 1 : apartments.length - 1;
+        updateApartmentInfo(currentIndex);
     });
 
-    document.getElementById('next-btn').addEventListener('click', () => {
-        if (currentApartmentIndex < apartments.length - 1) {
-            currentApartmentIndex++;
-            displayApartmentInfo();
-        }
+    nextBtn.addEventListener('click', function() {
+        currentIndex = (currentIndex < apartments.length - 1) ? currentIndex + 1 : 0;
+        updateApartmentInfo(currentIndex);
     });
 
-    document.getElementById('close-btn').addEventListener('click', () => {
-        document.getElementById('ipad').style.display = 'none';
-        fetch(`https://${GetParentResourceName()}/closeUI`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json; charset=UTF-8'
-            },
-            body: JSON.stringify({})
-        });
+    closeBtn.addEventListener('click', function() {
+        ipad.style.display = 'none';
     });
+
+    // Initialize with the first apartment
+    updateApartmentInfo(currentIndex);
 });
