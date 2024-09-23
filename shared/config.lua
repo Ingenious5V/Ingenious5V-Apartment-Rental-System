@@ -10,6 +10,9 @@ Config.PedMarkerLocation = vector3(0.0, 0.0, 0.0) -- Default coordinates
 -- Ped type (model name)
 Config.PedType = 'a_m_m_business_01' -- Default ped model
 
+-- Ped rotation (heading in degrees)
+Config.PedRotation = 0.0 -- Default rotation
+
 
 Config.Apartments = {
     {
