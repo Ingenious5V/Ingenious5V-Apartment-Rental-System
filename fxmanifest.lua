@@ -26,14 +26,9 @@ ui_page 'html/index.html'
 files {
     'html/index.html',
     'html/style.css',
-    'html/script.js'
-}
-
-
--- UI page
-ui_page 'html/index.html'
-
--- Dependencies
-dependencies {
-    'oxmysql'
+    'html/script.js',
+    'html/images/apartment1.jpg',
+    'html/images/apartment2.jpg',
+    'html/images/interior1.jpg',
+    'html/images/interior2.jpg'
 }
