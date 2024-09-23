@@ -5,18 +5,20 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('message', (event) => {
         const data = event.data;
         if (data.action === 'openApartmentMenu') {
-            openApartmentMenu(data.apartments);
+            openApartmentMenu(data.apartments, data.tabletWidth, data.tabletHeight);
         }
     });
 
     let currentApartmentIndex = 0;
     let apartments = [];
 
-    function openApartmentMenu(apartmentList) {
+    function openApartmentMenu(apartmentList, tabletWidth, tabletHeight) {
         apartments = apartmentList;
         currentApartmentIndex = 0;
         displayApartmentInfo();
         document.getElementById('ipad').style.display = 'block';
+        document.documentElement.style.setProperty('--tablet-width', `${tabletWidth}px`);
+        document.documentElement.style.setProperty('--tablet-height', `${tabletHeight}px`);
     }
 
     function displayApartmentInfo() {
@@ -39,5 +41,16 @@ document.addEventListener('DOMContentLoaded', () => {
             currentApartmentIndex++;
             displayApartmentInfo();
         }
+    });
+
+    document.getElementById('close-btn').addEventListener('click', () => {
+        document.getElementById('ipad').style.display = 'none';
+        fetch(`https://${GetParentResourceName()}/closeUI`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify({})
+        });
     });
 });
