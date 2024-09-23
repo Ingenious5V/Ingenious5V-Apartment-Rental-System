@@ -6,11 +6,29 @@ local function initializeTargetSystem()
         -- Initialize ox_target
         print('Initializing ox_target...')
         -- Add your ox_target initialization code here
+        exports.ox_target:addLocalEntity({
+            name = 'apartment_ped',
+            label = 'Rent An Apartment',
+            icon = 'fas fa-home',
+            onSelect = function()
+                showApartmentChoices()
+            end
+        })
 
     elseif Config.TargetSystem == 'qtarget' then
         -- Initialize qtarget
         print('Initializing qtarget...')
         -- Add your qtarget initialization code here
+        exports.qtarget:AddTargetEntity(ped, {
+            options = {
+                {
+                    event = 'rentApartment',
+                    icon = 'fas fa-home',
+                    label = 'Rent An Apartment'
+                }
+            },
+            distance = 2.5
+        })
 
     elseif Config.TargetSystem == 'none' then
         -- No target system
@@ -24,6 +42,7 @@ end
 local function createPedMarker()
     local pedLocation = Config.PedMarkerLocation
     local pedType = Config.PedType
+    local pedRotation = Config.PedRotation
 
     -- Load the ped model
     RequestModel(pedType)
@@ -31,10 +50,49 @@ local function createPedMarker()
         Wait(1)
     end
 
-    -- Create the ped at the specified location
-    local ped = CreatePed(4, pedType, pedLocation.x, pedLocation.y, pedLocation.z, 0.0, false, true)
+    -- Create the ped at the specified location with the specified rotation
+    local ped = CreatePed(4, pedType, pedLocation.x, pedLocation.y, pedLocation.z, pedRotation, false, true)
     SetEntityAsMissionEntity(ped, true, true)
-    print('Created ped marker at:', pedLocation, 'with ped type:', pedType)
+    print('Created ped marker at:', pedLocation, 'with ped type:', pedType, 'and rotation:', pedRotation)
+
+    -- Register the ped with the target system
+    if Config.TargetSystem == 'ox_target' then
+        exports.ox_target:addLocalEntity(ped, {
+            name = 'apartment_ped',
+            label = 'Rent An Apartment',
+            icon = 'fas fa-home',
+            onSelect = function()
+                showApartmentChoices()
+            end
+        })
+    elseif Config.TargetSystem == 'qtarget' then
+        exports.qtarget:AddTargetEntity(ped, {
+            options = {
+                {
+                    event = 'rentApartment',
+                    icon = 'fas fa-home',
+                    label = 'Rent An Apartment'
+                }
+            },
+            distance = 2.5
+        })
+    end
+end
+
+-- Function to show apartment choices
+local function showApartmentChoices()
+    -- Add your code to display the apartment choices UI
+    print('Showing apartment choices...')
+    -- Example: Trigger a NUI callback to open the UI
+    SetNuiFocus(true, true)
+    SendNUIMessage({
+        action = 'openApartmentMenu',
+        apartments = {
+            {name = 'Apartment 1', price = 1000},
+            {name = 'Apartment 2', price = 1500},
+            {name = 'Apartment 3', price = 2000}
+        }
+    })
 end
 
 -- Call the functions to initialize the target system and create the ped marker
