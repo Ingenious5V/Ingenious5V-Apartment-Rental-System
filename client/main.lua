@@ -74,35 +74,4 @@ local function createPedMarker()
         })
     elseif Config.TargetSystem == 'qtarget' then
         exports.qtarget:AddTargetEntity(ped, {
-            options = {
-                {
-                    event = 'rentApartment',
-                    icon = 'fas fa-home',
-                    label = 'Rent An Apartment',
-                    action = function(entity)
-                        showApartmentChoices()
-                    end
-                }
-            },
-            distance = 2.5
-        })
-    end
-end
-
--- Function to show apartment choices
-local function showApartmentChoices()
-    -- Add your code to display the apartment choices UI
-    print('Showing apartment choices...')
-    -- Example: Trigger a NUI callback to open the UI
-    SetNuiFocus(true, true)
-    SendNUIMessage({
-        action = 'openApartmentMenu',
-        apartments = Config.Apartments
-    })
-end
-
--- Call the functions to initialize the target system and create the ped marker
-initializeTargetSystem()
-createPedMarker()
-
--- Existing client script logic...
+            options
