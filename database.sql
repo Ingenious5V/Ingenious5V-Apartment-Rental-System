@@ -1,25 +1,25 @@
--- Create Players Table
+-- Create a table to store player information
 CREATE TABLE Players (
-    player_id INT AUTO_INCREMENT PRIMARY KEY,
-    player_name VARCHAR(100) NOT NULL,
-    player_email VARCHAR(100) UNIQUE NOT NULL
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    identifier VARCHAR(255) NOT NULL UNIQUE, -- Unique identifier for each player (e.g., Steam ID, Xbox ID)
+    name VARCHAR(255) NOT NULL,
+    rent_due DATETIME DEFAULT NULL -- To track when the next rent payment is due
 );
 
--- Create Rentals Table
-CREATE TABLE Rentals (
-    rental_id INT AUTO_INCREMENT PRIMARY KEY,
-    rental_name VARCHAR(100) NOT NULL,
-    rental_location VARCHAR(100) NOT NULL,
-    rental_price DECIMAL(10, 2) NOT NULL
+-- Create a table to store apartment information
+CREATE TABLE Apartments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    price INT NOT NULL -- Price of the apartment rent
 );
 
--- Create PlayerRentals Table
-CREATE TABLE PlayerRentals (
-    player_rental_id INT AUTO_INCREMENT PRIMARY KEY,
+-- Create a table to manage the rental agreements
+CREATE TABLE RentedApartments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
     player_id INT NOT NULL,
-    rental_id INT NOT NULL,
-    rental_start_date DATE NOT NULL,
-    rental_end_date DATE,
-    FOREIGN KEY (player_id) REFERENCES Players(player_id),
-    FOREIGN KEY (rental_id) REFERENCES Rentals(rental_id)
+    apartment_id INT NOT NULL,
+    rent_start DATETIME NOT NULL, -- When the rent starts
+    rent_end DATETIME NOT NULL, -- When the rent ends or needs to be renewed
+    FOREIGN KEY (player_id) REFERENCES Players(id),
+    FOREIGN KEY (apartment_id) REFERENCES Apartments(id)
 );
