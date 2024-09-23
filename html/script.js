@@ -8,18 +8,36 @@ document.addEventListener('DOMContentLoaded', () => {
             openApartmentMenu(data.apartments);
         }
     });
-});
 
-function openApartmentMenu(apartments) {
-    const menu = document.getElementById('apartment-menu');
-    menu.innerHTML = ''; // Clear existing menu items
+    let currentApartmentIndex = 0;
+    let apartments = [];
 
-    apartments.forEach(apartment => {
-        const item = document.createElement('div');
-        item.className = 'menu-item';
-        item.innerText = `${apartment.name} - $${apartment.price}`;
-        menu.appendChild(item);
+    function openApartmentMenu(apartmentList) {
+        apartments = apartmentList;
+        currentApartmentIndex = 0;
+        displayApartmentInfo();
+        document.getElementById('ipad').style.display = 'block';
+    }
+
+    function displayApartmentInfo() {
+        const apartment = apartments[currentApartmentIndex];
+        document.getElementById('apartment-name').innerText = apartment.name;
+        document.getElementById('apartment-price').innerText = `Price: $${apartment.price}`;
+        document.getElementById('apartment-image').src = apartment.image;
+        document.getElementById('interior-image').src = apartment.interiorImage;
+    }
+
+    document.getElementById('prev-btn').addEventListener('click', () => {
+        if (currentApartmentIndex > 0) {
+            currentApartmentIndex--;
+            displayApartmentInfo();
+        }
     });
 
-    menu.style.display = 'block';
-}
+    document.getElementById('next-btn').addEventListener('click', () => {
+        if (currentApartmentIndex < apartments.length - 1) {
+            currentApartmentIndex++;
+            displayApartmentInfo();
+        }
+    });
+});
