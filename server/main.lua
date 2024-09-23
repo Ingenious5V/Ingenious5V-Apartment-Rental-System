@@ -1,97 +1,94 @@
+local rentedApartments = {}
+
+RegisterServerEvent('rentapartment:saveRental')
+AddEventHandler('rentapartment:saveRental', function(apartment, interior)
+    local src = source
+    local xPlayer = ESX.GetPlayerFromId(src) -- Change this to QBCore if you're using QBCore
+    local identifier = xPlayer.identifier
+
+    if not rentedApartments[identifier] then
+        rentedApartments[identifier] = {}
+    end
+
+    -- Create rental entry
+    local rentDue = os.time() + (7 * 24 * 60 * 60) -- Rent due in one week
+    table.insert(rentedApartments[identifier], {
+        apartment = apartment,
+        interior = interior,
+        rentDue = rentDue
+    })
+
+    -- Save to database
+    MySQL.Async.execute('INSERT INTO rented_apartments (identifier, apartment, interior, rent_due) VALUES (@identifier, @apartment, @interior, @rent_due)', {
+        ['@identifier'] = identifier,
+        ['@apartment'] = json.encode(apartment),
+        ['@interior'] = json.encode(interior),
+        ['@rent_due'] = rentDue
+    })
+
+    TriggerClientEvent('esx:showNotification', src, "You have successfully rented " .. apartment.name .. " with a " .. interior.name .. " interior.")
+end)
+
 RegisterServerEvent('rentapartment:payRent')
-AddEventHandler('rentapartment:payRent', function(apartment, rent)
-    local xPlayer = ESX.GetPlayerFromId(source)
-    if xPlayer.getMoney() >= rent then
-        xPlayer.removeMoney(rent)
-        TriggerClientEvent('esx:showNotification', source, "You have paid $" .. rent .. " for renting " .. apartment.name)
-    else
-        TriggerClientEvent('esx:showNotification', source, "You don't have enough money to pay the rent!")
-    end
-end)
--- server.lua
+AddEventHandler('rentapartment:payRent', function()
+    local src = source
+    local xPlayer = ESX.GetPlayerFromId(src) -- Change this to QBCore if you're using QBCore
+    local identifier = xPlayer.identifier
 
--- Function to deduct rent from player's bank account
-function DeductRent(playerId, rentalId)
-    -- Fetch rental details
-    local rental = GetRentalDetails(rentalId)
-    local rentAmount = rental.rental_price
+    if rentedApartments[identifier] then
+        for i, rental in ipairs(rentedApartments[identifier]) do
+            if os.time() > rental.rentDue then
+                if xPlayer.getMoney() >= rental.apartment.price then
+                    xPlayer.removeMoney(rental.apartment.price)
+                    rental.rentDue = os.time() + (7 * 24 * 60 * 60) -- Extend rent due by one week
 
-    -- Fetch player's bank balance
-    local playerBankBalance = GetPlayerBankBalance(playerId)
+                    -- Update database
+                    MySQL.Async.execute('UPDATE rented_apartments SET rent_due = @rent_due WHERE identifier = @identifier AND apartment = @apartment AND interior = @interior', {
+                        ['@rent_due'] = rental.rentDue,
+                        ['@identifier'] = identifier,
+                        ['@apartment'] = json.encode(rental.apartment),
+                        ['@interior'] = json.encode(rental.interior)
+                    })
 
-    -- Check if player has enough balance
-    if playerBankBalance >= rentAmount then
-        -- Deduct rent from player's bank account
-        UpdatePlayerBankBalance(playerId, playerBankBalance - rentAmount)
-
-        -- Notify player
-        TriggerClientEvent('chat:addMessage', playerId, {
-            args = {"System", "Rent of $" .. rentAmount .. " has been deducted from your bank account."}
-        })
-    else
-        -- Notify player of insufficient funds
-        TriggerClientEvent('chat:addMessage', playerId, {
-            args = {"System", "Insufficient funds to pay rent of $" .. rentAmount .. "."}
-        })
-    end
-end
-
--- Example function to get rental details (you'll need to implement this)
-function GetRentalDetails(rentalId)
-    -- Fetch rental details from the database
-    -- This is a placeholder function, replace with actual database query
-    return {
-        rental_id = rentalId,
-        rental_price = 1500.00 -- Example rent amount
-    }
-end
-
--- Example function to get player's bank balance (you'll need to implement this)
-function GetPlayerBankBalance(playerId)
-    -- Fetch player's bank balance from the database
-    -- This is a placeholder function, replace with actual database query
-    return 2000.00 -- Example bank balance
-end
-
--- Example function to update player's bank balance (you'll need to implement this)
-function UpdatePlayerBankBalance(playerId, newBalance)
-    -- Update player's bank balance in the database
-    -- This is a placeholder function, replace with actual database query
-end
-
-RegisterNetEvent('ingenious5v:rentApartment')
-AddEventHandler('ingenious5v:rentApartment', function(apartmentName, selectedShell)
-    local apartment = GetApartmentByName(apartmentName)
-    if apartment then
-        local shellPrice = GetShellPrice(apartment, selectedShell)
-        local totalRent = apartment.price + shellPrice
-        -- Proceed with the rental process using totalRent
+                    TriggerClientEvent('esx:showNotification', src, "You have paid the rent for " .. rental.apartment.name .. ".")
+                else
+                    TriggerClientEvent('esx:showNotification', src, "You do not have enough money to pay the rent for " .. rental.apartment.name .. ".")
+                end
+            end
+        end
     end
 end)
 
-function GetApartmentByName(name)
-    for _, apartment in ipairs(Config.Apartments) do
-        if apartment.name == name then
-            return apartment
-        end
+ESX.RegisterServerCallback('rentapartment:getRentedApartments', function(source, cb)
+    local xPlayer = ESX.GetPlayerFromId(source) -- Change this to QBCore if you're using QBCore
+    local identifier = xPlayer.identifier
+
+    if rentedApartments[identifier] then
+        cb(rentedApartments[identifier])
+    else
+        cb({})
     end
-    return nil
-end
+end)
 
-function GetShellPrice(apartment, shell)
-    for _, interior in ipairs(apartment.interiors) do
-        if interior.shell == shell then
-            return interior.price
-        end
-    end
-    return 0
-end
-
--- Existing server script logic...
-
--- Overextended integration logic
 AddEventHandler('onResourceStart', function(resourceName)
     if GetCurrentResourceName() == resourceName then
-        print('Bridge server script started')
+        MySQL.Async.fetchAll('SELECT * FROM rented_apartments', {}, function(result)
+            for i = 1, #result do
+                local identifier = result[i].identifier
+                local apartment = json.decode(result[i].apartment)
+                local interior = json.decode(result[i].interior)
+                local rentDue = result[i].rent_due
+
+                if not rentedApartments[identifier] then
+                    rentedApartments[identifier] = {}
+                end
+
+                table.insert(rentedApartments[identifier], {
+                    apartment = apartment,
+                    interior = interior,
+                    rentDue = rentDue
+                })
+            end
+        end)
     end
 end)
