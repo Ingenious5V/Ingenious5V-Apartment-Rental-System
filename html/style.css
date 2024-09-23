@@ -1,4 +1,9 @@
 /* html/style.css */
+:root {
+    --tablet-width: 400px;
+    --tablet-height: 600px;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
@@ -10,8 +15,8 @@ body {
 }
 
 #ipad {
-    width: 400px;
-    height: 600px;
+    width: var(--tablet-width);
+    height: var(--tablet-height);
     background-color: #fff;
     border-radius: 30px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -48,4 +53,20 @@ body {
 
 #navigation button:hover {
     background-color: #0056b3;
+}
+
+#close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#close-btn:hover {
+    background-color: #cc0000;
 }
