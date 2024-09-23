@@ -24,7 +24,10 @@ local function initializeTargetSystem()
                 {
                     event = 'rentApartment',
                     icon = 'fas fa-home',
-                    label = 'Rent An Apartment'
+                    label = 'Rent An Apartment',
+                    action = function(entity)
+                        showApartmentChoices()
+                    end
                 }
             },
             distance = 2.5
@@ -33,6 +36,10 @@ local function initializeTargetSystem()
     elseif Config.TargetSystem == 'none' then
         -- No target system
         print('No target system selected.')
+        -- Add a command to open the UI for testing purposes
+        RegisterCommand('openApartmentMenu', function()
+            showApartmentChoices()
+        end, false)
     else
         print('Invalid target system selected.')
     end
@@ -71,7 +78,10 @@ local function createPedMarker()
                 {
                     event = 'rentApartment',
                     icon = 'fas fa-home',
-                    label = 'Rent An Apartment'
+                    label = 'Rent An Apartment',
+                    action = function(entity)
+                        showApartmentChoices()
+                    end
                 }
             },
             distance = 2.5
@@ -87,11 +97,7 @@ local function showApartmentChoices()
     SetNuiFocus(true, true)
     SendNUIMessage({
         action = 'openApartmentMenu',
-        apartments = {
-            {name = 'Apartment 1', price = 1000},
-            {name = 'Apartment 2', price = 1500},
-            {name = 'Apartment 3', price = 2000}
-        }
+        apartments = Config.Apartments
     })
 end
 
@@ -100,74 +106,3 @@ initializeTargetSystem()
 createPedMarker()
 
 -- Existing client script logic...
-
-
-local selectedApartment = nil
-local selectedInterior = nil
-
-Citizen.CreateThread(function()
-    local pedMarker = Config.PedMarkerLocation
-    while true do
-        Citizen.Wait(0)
-        local playerCoords = GetEntityCoords(PlayerPedId())
-        if GetDistanceBetweenCoords(playerCoords, pedMarker.x, pedMarker.y, pedMarker.z, true) < 1.5 then
-            -- Display prompt to rent apartment
-            -- Handle player input to select apartment and shell
-            -- TriggerServerEvent('ingenious5v:rentApartment', selectedApartment, selectedShell)
-        end
-    end
-end)
-
-
-RegisterCommand('rentapartment', function()
-    local playerPed = PlayerPedId()
-    local playerCoords = GetEntityCoords(playerPed)
-
-    -- Display apartment options
-    print("Select an apartment:")
-    for i, apt in ipairs(Config.Apartments) do
-        print(i .. ". " .. apt.name .. " - $" .. apt.price .. " per week")
-    end
-
-    -- Get player input for apartment selection
-    local aptChoice = tonumber(GetUserInput("Enter apartment number: ", "", 2))
-    selectedApartment = Config.Apartments[aptChoice]
-
-    -- Display interior options
-    print("Select an interior:")
-    for i, int in ipairs(Config.Interiors) do
-        print(i .. ". " .. int.name)
-    end
-
-    -- Get player input for interior selection
-    local intChoice = tonumber(GetUserInput("Enter interior number: ", "", 2))
-    selectedInterior = Config.Interiors[intChoice]
-
-    -- Calculate total rent
-    local totalRent = selectedApartment.price
-    print("You have selected " .. selectedApartment.name .. " with a " .. selectedInterior.name .. " interior.")
-    print("Your total rent is $" .. totalRent .. " per week.")
-end, false)
-
-function GetUserInput(text, example, length)
-    AddTextEntry('FMMC_KEY_TIP1', text .. ':')
-    DisplayOnscreenKeyboard(1, "FMMC_KEY_TIP1", "", example, "", "", "", length)
-    while (UpdateOnscreenKeyboard() == 0) do
-        DisableAllControlActions(0)
-        Wait(0)
-    end
-    if (GetOnscreenKeyboardResult()) then
-        return GetOnscreenKeyboardResult()
-    end
-    return nil
-end
-
--- Existing client script logic...
-
--- Overextended integration logic
-AddEventHandler('onClientResourceStart', function(resourceName)
-    if GetCurrentResourceName() == resourceName then
-        print('Bridge client script started')
-    end
-end)
-
