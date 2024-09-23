@@ -1,53 +1,11 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const ipad = document.getElementById('ipad');
-    const closeBtn = document.getElementById('close-btn');
-    const prevBtn = document.getElementById('prev-btn');
-    const nextBtn = document.getElementById('next-btn');
-    const apartmentName = document.getElementById('apartment-name');
-    const apartmentPrice = document.getElementById('apartment-price');
-    const apartmentImage = document.getElementById('apartment-image');
-    const interiorImage = document.getElementById('interior-image');
-
-    // Example data
-    const apartments = [
-        {
-            name: 'Apartment 1',
-            price: '$1000/month',
-            image: 'images/default_apartment.jpg',
-            interior: 'images/default_interior.jpg'
-        },
-        {
-            name: 'Apartment 2',
-            price: '$1200/month',
-            image: 'images/default_apartment.jpg',
-            interior: 'images/default_interior.jpg'
-        }
-    ];
-
-    let currentIndex = 0;
-
-    function updateApartmentInfo(index) {
-        const apartment = apartments[index];
-        apartmentName.textContent = apartment.name;
-        apartmentPrice.textContent = apartment.price;
-        apartmentImage.src = apartment.image;
-        interiorImage.src = apartment.interior;
-    }
-
-    prevBtn.addEventListener('click', function() {
-        currentIndex = (currentIndex > 0) ? currentIndex - 1 : apartments.length - 1;
-        updateApartmentInfo(currentIndex);
+// Fetch apartments data from the server
+fetch('/api/apartments')
+    .then(response => response.json())
+    .then(data => {
+        const apartmentList = document.getElementById('apartment-list');
+        data.forEach(apartment => {
+            const apartmentItem = document.createElement('div');
+            apartmentItem.innerHTML = `<h3>${apartment.name}</h3><p>Price: $${apartment.price}</p>`;
+            apartmentList.appendChild(apartmentItem);
+        });
     });
-
-    nextBtn.addEventListener('click', function() {
-        currentIndex = (currentIndex < apartments.length - 1) ? currentIndex + 1 : 0;
-        updateApartmentInfo(currentIndex);
-    });
-
-    closeBtn.addEventListener('click', function() {
-        ipad.style.display = 'none';
-    });
-
-    // Initialize with the first apartment
-    updateApartmentInfo(currentIndex);
-});
