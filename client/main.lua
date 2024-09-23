@@ -63,15 +63,4 @@ local function createPedMarker()
     print('Created ped marker at:', pedLocation, 'with ped type:', pedType, 'and rotation:', pedRotation)
 
     -- Register the ped with the target system
-    if Config.TargetSystem == 'ox_target' then
-        exports.ox_target:addLocalEntity(ped, {
-            name = 'apartment_ped',
-            label = 'Rent An Apartment',
-            icon = 'fas fa-home',
-            onSelect = function()
-                showApartmentChoices()
-            end
-        })
-    elseif Config.TargetSystem == 'qtarget' then
-        exports.qtarget:AddTargetEntity(ped, {
-            options
+    if Config.TargetSystem
